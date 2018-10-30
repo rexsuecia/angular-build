@@ -3,6 +3,7 @@ FROM node:8.9.4
 ### Unzip was added for terraform install
 ### Do we need python dev to start with?
 ### jq is used to parse package.json
+### Unzip to install sonar scanner.
 
 RUN apt-get update && \
     apt-get dist-upgrade -y -q && \
@@ -17,6 +18,7 @@ RUN apt-get update && \
           python-dev \
           python-pip \
           vim \
+          unzip \
           jq && \
     pip install -q awscli && \
     apt-get purge -y -q python-dev && \
@@ -36,6 +38,13 @@ RUN echo "deb https://deb.debian.org/debian stretch main" > \
 
 # Get us the latest version of yarn
 RUN npm i -g yarn
+
+# Install Sonar Cube
+RUN curl -sL https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.2.0.1227-linux.zip -o /tmp/scanner.zip
+RUN unzip /tmp/scanner.zip -d /usr/local/bin/sonar
+ENV PATH="${PATH}:/usr/local/bin/sonar/sonar-scanner-3.2.0.1227-linux/bin"
+RUN rm /tmp/scanner.zip
+
 
 COPY ./scripts/*.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/*.sh

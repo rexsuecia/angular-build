@@ -100,3 +100,36 @@ function upload_to_s3 {
 
   aws s3 sync dist/ s3://www."${TARGET}"."${DOMAIN}"/ --quiet
 }
+
+function switch_role {
+
+    # The role to assume typically, arn:aws:iam::123456789012:role/SOME_ROLE_NAME
+    ROLE="${1}"
+
+    CREDS=$(aws sts assume-role \
+        --role-arn "${ROLE}" \
+        --role-session-name Temprole --region eu-west-1 --output text \
+        --query 'Credentials.[AccessKeyId, SecretAccessKey, SessionToken]'
+    )
+
+    # shellcheck disable=SC2086
+    AWS_ACCESS_KEY_ID=$(echo ${CREDS} | awk '{print $1}')
+    # shellcheck disable=SC2086
+    AWS_SECRET_ACCESS_KEY=$(echo ${CREDS} | awk '{print $2}')
+    # shellcheck disable=SC2086
+    AWS_SESSION_TOKEN=$(echo ${CREDS} | awk '{print $3}')
+
+
+    # Must be exported so that aws cli can get them
+    export AWS_ACCESS_KEY_ID
+    export AWS_SECRET_ACCESS_KEY
+    export AWS_SESSION_TOKEN
+}
+
+function run_sonar {
+    # $1 the role to assume to get the secrets
+    # $2 the secret key e.g. accomplish/sonarcloud
+    switch_role "${1}"
+    SONAR_SECRET=$(aws secretsmanager get-secret-value --secret-id "${2}" --query SecretString --output text)
+    sonar-scanner -Dsonar.login="${SONAR_SECRET}"
+}
