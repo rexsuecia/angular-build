@@ -65,7 +65,8 @@ function upload_to_s3 {
 
   HIGH_CACHE="*.bundle.css *.bundle.js"
   MEDIUM_CACHE="*.png *.svg *.gif *.mp3"
-  LOW_CACHE="index.html *.json *.js"
+  LOW_CACHE="index.html *.json"
+  JAVASCRIPT="*.js"
 
   # Wy do I disable globing?
 
@@ -94,6 +95,15 @@ function upload_to_s3 {
     aws s3 sync dist/ s3://www."${TARGET}"."${DOMAIN}"/ \
       --exclude "*" \
       --include "$INCLUDE" \
+      --cache-control="public,max-age=3600" \
+      --quiet
+  done
+
+  for INCLUDE in ${JAVASCRIPT}; do
+    aws s3 sync dist/ s3://www."${TARGET}".aiten.com/ \
+      --exclude "*" \
+      --include "$INCLUDE" \
+      --content-type="text/javascript" \
       --cache-control="public,max-age=3600" \
       --quiet
   done
