@@ -155,3 +155,13 @@ function run_sonar {
     SONAR_SECRET=$(aws secretsmanager get-secret-value --secret-id "${2}" --query SecretString --output text)
     sonar-scanner -Dsonar.login="${SONAR_SECRET}"
 }
+
+#
+# Copies the 3rd party licence extracted file to assets.
+#
+function thirdPartyCopy {
+  if [[ -e "./dist/3rdpartylicenses.txt" ]]; then
+    echo "copying"
+    cp ./dist/3rdpartylicenses.txt ./dist/assets/
+  fi
+}
