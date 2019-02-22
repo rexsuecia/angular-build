@@ -1,4 +1,4 @@
-FROM node:8.9.4
+FROM node:8.15.0
 
 ### Unzip was added for terraform install
 ### Do we need python dev to start with?
