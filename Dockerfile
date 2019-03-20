@@ -39,6 +39,11 @@ RUN echo "deb https://deb.debian.org/debian stretch main" > \
 # Get us the latest version of yarn
 RUN npm i -g yarn
 
+# Install Terraform
+RUN wget https://releases.hashicorp.com/terraform/0.11.13/terraform_0.11.13_linux_amd64.zip
+RUN unzip terraform_0.11.13_linux_amd64.zip
+RUN mv terraform /usr/local/bin/
+
 # Install Sonar Cube
 RUN curl -sL https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.2.0.1227-linux.zip -o /tmp/scanner.zip
 RUN unzip /tmp/scanner.zip -d /usr/local/bin/sonar
