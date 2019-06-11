@@ -1,4 +1,4 @@
-FROM node:8.15.0
+FROM node:10.16-jessie
 
 ### Unzip was added for terraform install
 ### Do we need python dev to start with?
@@ -40,8 +40,8 @@ RUN echo "deb https://deb.debian.org/debian stretch main" > \
 RUN npm i -g yarn
 
 # Install Terraform
-RUN wget https://releases.hashicorp.com/terraform/0.11.13/terraform_0.11.13_linux_amd64.zip
-RUN unzip terraform_0.11.13_linux_amd64.zip
+RUN wget https://releases.hashicorp.com/terraform/0.11.14/terraform_0.11.14_linux_amd64.zip
+RUN unzip terraform_0.11.14_linux_amd64.zip
 RUN mv terraform /usr/local/bin/
 
 # Install Sonar Cube
