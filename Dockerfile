@@ -41,7 +41,7 @@ RUN echo "deb https://deb.debian.org/debian stretch main" > \
 RUN npm i -g yarn
 
 # Install Terraform
-RUN wget https://releases.hashicorp.com/terraform/0.13.3/terraform_0.12.3_linux_amd64.zip
+RUN wget https://releases.hashicorp.com/terraform/0.12.3/terraform_0.12.3_linux_amd64.zip
 RUN unzip terraform_0.12.3_linux_amd64.zip
 RUN mv terraform /usr/local/bin/
 
