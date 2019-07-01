@@ -1,4 +1,4 @@
-FROM node:8.15.0
+FROM node:10.16-jessie
 
 ### Unzip was added for terraform install
 ### Do we need python dev to start with?
@@ -34,6 +34,7 @@ RUN echo "deb https://deb.debian.org/debian stretch main" > \
                         /etc/apt/sources.list && \
         apt-get update  && \
         apt-get -y -qq install shellcheck
+
 
 
 # Get us the latest version of yarn
