@@ -154,7 +154,7 @@ function run_sonar {
     SONAR_OPTIONS=${SONAR_OPTIONS} # Externally set -Dsonar.x=y -Dsonar.a=b options
     switch_role "${1}"
     SONAR_SECRET=$(aws secretsmanager get-secret-value --secret-id "${2}" --query SecretString --output text)
-    sonar-scanner -Dsonar.login="${SONAR_SECRET}" ${SONAR_OPTIONS:+""}
+    sonar-scanner -Dsonar.login="${SONAR_SECRET}"
 }
 
 #
