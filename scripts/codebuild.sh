@@ -151,9 +151,10 @@ function switch_role {
 function run_sonar {
     # $1 the role to assume to get the secrets
     # $2 the secret key e.g. accomplish/sonarcloud
+    SONAR_OPTIONS=${SONAR_OPTIONS} # Externally set -Dsonar.x=y -Dsonar.a=b options
     switch_role "${1}"
     SONAR_SECRET=$(aws secretsmanager get-secret-value --secret-id "${2}" --query SecretString --output text)
-    sonar-scanner -Dsonar.login="${SONAR_SECRET}"
+    sonar-scanner -Dsonar.login="${SONAR_SECRET}" "${SONAR_OPTIONS}"
 }
 
 #
